@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".Frag.TriggerFalse" android:background="@color/white">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="80dp" android:layout_alignParentBottom="true" android:id="@+id/li">
+        <Button
+                android:text="重新标定"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:id="@+id/exit" android:layout_weight="1"
+                android:background="@mipmap/btn_rectangle_short" android:textColor="@color/white"
+                android:textSize="36sp" android:layout_alignTop="@+id/li" android:layout_alignStart="@+id/li"/>
+        <Button
+                android:text="重新写入"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:id="@+id/keepgoing" android:layout_weight="1"
+                android:background="@mipmap/btn_rectangle_short" android:textColor="@color/white"
+                android:textSize="36sp"/>
+    </LinearLayout>
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="主机标定完成, 请检查副机CAN通讯线 是否接好，或是副机是否 运作正常" android:textSize="25sp"
+            android:layout_marginTop="10dp" android:layout_marginStart="42dp" android:layout_marginEnd="42dp"
+            android:lineSpacingMultiplier="1.2" android:id="@+id/text"/>
+    <ImageView
+            android:src="@mipmap/error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/imageView19" android:layout_below="@id/text"
+            android:layout_above="@id/li"/>
+
+</RelativeLayout>
