@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.trigger_success.view.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -31,7 +32,7 @@ class TriggerFalse : RootFragement() {
 act.supportFragmentManager.popBackStack(null,1)
         }
         rootview.keepgoing.setOnClickListener {
-            act.supportFragmentManager.popBackStack("TriggerWriting",0)
+            act.GoBack()
         }
         return rootview
     }

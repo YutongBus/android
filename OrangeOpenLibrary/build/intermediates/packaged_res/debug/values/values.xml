@@ -318,7 +318,7 @@
     <string name="app_my_favorite">My favorite</string>
     <string name="app_my_favorite_setting">My Favorite Setting</string>
     <string name="app_myfavorite_is_empty">My favorite is empty now!</string>
-    <string name="app_name">TPMS</string>
+    <string name="app_name">Yutong</string>
     <string name="app_never">Never</string>
     <string name="app_new_sensor">NEW SENSOR</string>
     <string name="app_new_sensor_list">NEW sensor List</string>
@@ -619,12 +619,12 @@
     <string name="would_like_to_with_pair">" USB PDA " would like to with pair your smartphone.</string>
     <string name="yeargo">1 year ago</string>
     <style name="MainAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+        
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowActionBar">false</item> <!-- 加这行 -->
-        <item name="windowNoTitle">true</item> <!-- 再加这行 -->
+        <item name="windowActionBar">false</item> 
+        <item name="windowNoTitle">true</item> 
         <item name="android:textColor">#32414E</item>
     </style>
     <style name="MyDialog" parent="Theme.AppCompat.Dialog">

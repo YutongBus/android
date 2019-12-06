@@ -92,6 +92,6 @@ class MainActivity : BleActivity() {
 
     override fun onResume() {
         super.onResume()
-        SetNaVaGation(false)
+        SetNaVaGation(true)
     }
 }
