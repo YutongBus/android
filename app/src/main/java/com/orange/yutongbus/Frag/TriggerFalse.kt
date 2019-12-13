@@ -11,7 +11,10 @@ import com.orange.blelibrary.blelibrary.Callback.DaiSetUp
 import com.orange.blelibrary.blelibrary.RootFragement
 
 import com.orange.yutongbus.R
+import kotlinx.android.synthetic.main.fragment_trigger_false.view.*
 import kotlinx.android.synthetic.main.trigger_success.view.*
+import kotlinx.android.synthetic.main.trigger_success.view.exit
+import kotlinx.android.synthetic.main.trigger_success.view.keepgoing
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,16 +38,20 @@ class TriggerFalse : RootFragement() {
         {
             TriggerWriting.版本不一樣 ->
             {
-                act.ShowDaiLog(R.layout.trigger_version_error,true,false, DaiSetUp { it.findViewById<TextView>(R.id.textView23).text = "主副机版本新旧不一样" })
+                rootview.text.text= "主副机版本新旧不一样"
             }
             TriggerWriting.錯誤 ->
             {
-                act.ShowDaiLog(R.layout.trigger_version_error,true,false, DaiSetUp { it.findViewById<TextView>(R.id.textView23).text = "错误 \n  请检查主副机是否有插电" })
+                rootview.text.text= "错误 \n  请检查主副机是否有插电"
             }
 
             TriggerWriting.皆為舊或新 ->
             {
-                act.ShowDaiLog(R.layout.trigger_version_error,true,false, DaiSetUp { it.findViewById<TextView>(R.id.textView23).text = "十轮版本需为新版" })
+                rootview.text.text=if(WheelTagUp.type== WheelTagUp.十轮配置)"十轮版本需为新版" else "错误 \n  请检查主副机是否有插电"
+//                act.ShowDaiLog(R.layout.trigger_version_error,true,false, DaiSetUp { it.findViewById<TextView>(R.id.textView23).text = "错误 \n  请检查主副机是否有插电" })
+//                if(WheelTagUp.type== WheelTagUp.十轮配置) {
+//                    act.ShowDaiLog(R.layout.trigger_version_error, true, false, DaiSetUp { it.findViewById<TextView>(R.id.textView23).text = "十轮版本需为新版" })
+//                }
             }
 
         }

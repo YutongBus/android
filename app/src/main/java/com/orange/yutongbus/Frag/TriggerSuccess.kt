@@ -28,6 +28,9 @@ class TriggerSuccess : RootFragement() {
         savedInstanceState: Bundle?
     ): View? {
         rootview=inflater.inflate(R.layout.trigger_success, container, false)
+
+        rootview.textView30.text = TriggerWriting.Main_or_Auxiliary + "\n标定完成"
+
         rootview.exit.setOnClickListener {
             act.supportFragmentManager.popBackStack(null,1)
         }

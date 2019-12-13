@@ -23,12 +23,18 @@
                 android:background="@mipmap/btn_rectangle_short" android:textColor="@color/white"
                 android:textSize="36sp"/>
     </LinearLayout>
+
     <TextView
+            android:id="@+id/text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="主机标定完成, 请检查副机CAN通讯线 是否接好，或是副机是否 运作正常" android:textSize="25sp"
-            android:layout_marginTop="10dp" android:layout_marginStart="42dp" android:layout_marginEnd="42dp"
-            android:lineSpacingMultiplier="1.2" android:id="@+id/text"/>
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="42dp"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.2"
+            android:text="主机标定完成, 请检查副机CAN通讯线 是否接好，或是副机是否 运作正常"
+            android:textSize="25sp" />
     <ImageView
             android:src="@mipmap/error"
             android:layout_width="wrap_content"

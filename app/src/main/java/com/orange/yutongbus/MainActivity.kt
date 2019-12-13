@@ -121,21 +121,23 @@ class MainActivity : BleActivity() {
 
     override fun onResume() {
         super.onResume()
-        val profilePreferences = getSharedPreferences("Setting", Context.MODE_PRIVATE)
-        val data=profilePreferences.getInt("tirecount",0)
-        val havespare=profilePreferences.getBoolean("havespare",false)
-        if(data!=0){
-            ShowDaiLog(R.layout.keep_trigger,false,false, DaiSetUp {
-                it.findViewById<TextView>(R.id.cancel).setOnClickListener {
-                    DaiLogDismiss()
-                }
-                it.findViewById<TextView>(R.id.Yes).setOnClickListener {
-                    DaiLogDismiss()
-                    WheelTagUp.type=data
-                    SpareSelect.havespare=havespare
-                    ChangePage(WheelTagUp(),R.id.frage,"WheelTagUp",true)
-                }
-            })
+        if(NowFrage=="Home"){
+            val profilePreferences = getSharedPreferences("Setting", Context.MODE_PRIVATE)
+            val data=profilePreferences.getInt("tirecount",0)
+            val havespare=profilePreferences.getBoolean("havespare",false)
+            if(data!=0){
+                ShowDaiLog(R.layout.keep_trigger,false,false, DaiSetUp {
+                    it.findViewById<TextView>(R.id.cancel).setOnClickListener {
+                        DaiLogDismiss()
+                    }
+                    it.findViewById<TextView>(R.id.Yes).setOnClickListener {
+                        DaiLogDismiss()
+                        WheelTagUp.type=data
+                        SpareSelect.havespare=havespare
+                        ChangePage(WheelTagUp(),R.id.frage,"WheelTagUp",true)
+                    }
+                })
+            }
         }
         SetNaVaGation(true)
     }

@@ -35,6 +35,10 @@ class TriggerWriting : RootFragement() {
         val 錯誤=1;
         val 版本不一樣=2;
         val 皆為舊或新=3;
+
+        var Main_or_Auxiliary ="";
+        val 主機="主机";
+        val 主副機="主机，从机";
     }
 
     override fun onCreateView(
@@ -51,6 +55,9 @@ class TriggerWriting : RootFragement() {
 
                     if(WheelTagUp.type ==WheelTagUp.二轮配置 ||WheelTagUp.type ==WheelTagUp.四轮配置)
                     {
+                        Main_or_Auxiliary = 主機
+                        error_type = 錯誤
+
                         for (i in 0 until memory.Triggerid.size) {
                             when(WheelTagUp.type)
                             {
@@ -62,7 +69,6 @@ class TriggerWriting : RootFragement() {
                                 {success = Command.WriteId(Memory.四輪HEX[i], memory.Triggerid[Memory.四輪順序[i]])}
 
                             }
-
 
                             if (!success) {
                                 break
@@ -84,9 +90,8 @@ class TriggerWriting : RootFragement() {
                         }
                         else
                         {
-                            error_type = 錯誤
+                            //error_type = 錯誤
                         }
-
 
                         handler.post {
                             act.ChangePage(
@@ -98,20 +103,23 @@ class TriggerWriting : RootFragement() {
                         }
 
                     }
-                    else {
+            if(WheelTagUp.type ==WheelTagUp.八轮配置中 || WheelTagUp.type ==WheelTagUp.八轮配置後 ||WheelTagUp.type ==WheelTagUp.十轮配置)
+            {
+                        //var ceckversion=Command.CheckVersion(wheel,wheel_length)
+                if (ceckversion == 0) {
+                    error_type = 錯誤
+                    handler.post { act.ChangePage(TriggerFalse(), R.id.frage, "TriggerFalse", true) }
+                }
 
-                        if (ceckversion == 0) {
-                            error_type = 錯誤
-                            handler.post { act.ChangePage(TriggerFalse(), R.id.frage, "TriggerFalse", true) }
-                        }
+                if (ceckversion == 1 ) {
+                    error_type = 版本不一樣
+                    handler.post { act.ChangePage(TriggerFalse(), R.id.frage, "TriggerFalse", true) }
+                }
 
-                        if (ceckversion == 1) {
-                            error_type = 版本不一樣
-                            handler.post { act.ChangePage(TriggerFalse(), R.id.frage, "TriggerFalse", true) }
-                        }
-
-                if (ceckversion == 2 || ceckversion == 3) {
+                if (ceckversion == 2 || ceckversion == 3)
+                {
                     error_type = 皆為舊或新
+                    Main_or_Auxiliary = 主副機
 
                      for (i in 0 until memory.Triggerid.size) {
                        when (WheelTagUp.type) {
@@ -136,12 +144,12 @@ class TriggerWriting : RootFragement() {
                            //success =
                            //Command.WriteId(Memory.兩輪HEX[i], memory.Triggerid[Memory.兩輪順序[i]])
                            //}
-                           WheelTagUp.六轮配置 -> {
-                               success = Command.WriteId(Memory.六輪HEX[i], memory.Triggerid[Memory.六輪順序[i]])
-                           }
-                           WheelTagUp.四轮配置 -> {
-                               success = Command.WriteId(Memory.四輪HEX[i], memory.Triggerid[Memory.四輪順序[i]])
-                           }
+                           //WheelTagUp.六轮配置 -> {
+                               //success = Command.WriteId(Memory.六輪HEX[i], memory.Triggerid[Memory.六輪順序[i]])
+                           //}
+                           //WheelTagUp.四轮配置 -> {
+                               //success = Command.WriteId(Memory.四輪HEX[i], memory.Triggerid[Memory.四輪順序[i]])
+                           //}
                        }
                        if (!success) {
                            break
@@ -171,12 +179,12 @@ class TriggerWriting : RootFragement() {
                                 //memory.Triggerid[Memory.兩輪順序[i]]
                                 //)
                                 //}
-                                WheelTagUp.六轮配置 -> {
-                                    success = Command.WriteSpId(Memory.六輪HEX[i], memory.Triggerid[Memory.六輪順序[i]])
-                                }
-                                WheelTagUp.四轮配置 -> {
-                                    success = Command.WriteSpId(Memory.四輪HEX[i], memory.Triggerid[Memory.四輪順序[i]])
-                                }
+                                //WheelTagUp.六轮配置 -> {
+                                    //success = Command.WriteSpId(Memory.六輪HEX[i], memory.Triggerid[Memory.六輪順序[i]])
+                                //}
+                                //WheelTagUp.四轮配置 -> {
+                                   // success = Command.WriteSpId(Memory.四輪HEX[i], memory.Triggerid[Memory.四輪順序[i]])
+                                //}
                             }
                             if (!success) {
                                 break
@@ -196,6 +204,99 @@ class TriggerWriting : RootFragement() {
                         )
                     }
                 }
+
+            }
+
+            if(WheelTagUp.type ==WheelTagUp.六轮配置)
+            {
+
+                if(ceckversion == 0)
+                {
+                    error_type = 錯誤
+                    handler.post { act.ChangePage(TriggerFalse(), R.id.frage, "TriggerFalse", true) }
+                }
+                if(ceckversion == 1)
+                {
+                    error_type = 版本不一樣
+                    handler.post { act.ChangePage(TriggerFalse(), R.id.frage, "TriggerFalse", true) }
+                }
+                if(ceckversion == 2 || ceckversion == 3)
+                {
+                    Main_or_Auxiliary = 主副機
+                    error_type = 錯誤
+
+                    for (i in 0 until memory.Triggerid.size) {
+                        when(WheelTagUp.type)
+                        {
+                            WheelTagUp.六轮配置->
+                            {success = Command.WriteId(Memory.六輪HEX[i], memory.Triggerid[Memory.六輪順序[i]])}
+                        }
+
+                        if (!success) {
+                            break
+                        }
+                    }
+
+                    if (success) {
+                        for (i in 0 until memory.Triggerid.size) {
+                            success = Command.WriteSpId(Memory.六輪HEX[i], memory.Triggerid[Memory.六輪順序[i]])
+                            if (!success) {
+                                break
+                            }
+                        }
+                    }
+
+                    if (success) {
+                        success = Command.WritePressure(memory.Pressure)
+                    }
+                    else
+                    {
+                        //error_type = 錯誤
+                    }
+
+                    handler.post {
+                        act.ChangePage(
+                            if (success) TriggerSuccess() else TriggerFalse(),
+                            R.id.frage,
+                            if (success) {"TriggerSuccess"} else {"TriggerFalse"} ,
+                            true
+                        )
+                    }
+                }
+                if(ceckversion == 4)
+                {
+                    Main_or_Auxiliary = 主機
+                    error_type = 錯誤
+
+                    for (i in 0 until memory.Triggerid.size)
+                    {
+                        success = Command.WriteId(Memory.六輪HEX[i], memory.Triggerid[Memory.六輪順序[i]])
+
+                        if (!success) {
+                            break
+                        }
+                    }
+
+                    if (success) {
+                        success = Command.WritePressure(memory.Pressure)
+                    }
+                    else
+                    {
+                        //error_type = 錯誤
+                    }
+
+                    handler.post {
+                        act.ChangePage(
+                            if (success) TriggerSuccess() else TriggerFalse(),
+                            R.id.frage,
+                            if (success) {"TriggerSuccess"} else {"TriggerFalse"} ,
+                            true
+                        )
+                    }
+                }
+
+
+
             }
         }.start()
         return rootview
