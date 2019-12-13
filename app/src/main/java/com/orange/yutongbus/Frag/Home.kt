@@ -34,9 +34,11 @@ class Home : RootFragement() {
     ): View? {
         rootview=inflater.inflate(R.layout.fragment_home, container, false)
         rootview.i1.setOnClickListener {
+            SpareSelect.ShowDialog = true
         act.ChangePage(SpareSelect(),R.id.frage,"SpareSelect",true)
         }
         rootview.t1.setOnClickListener {
+            SpareSelect.ShowDialog = true
             act.ChangePage(SpareSelect(),R.id.frage,"SpareSelect",true)
         }
         rootview.imageView4.setOnClickListener {

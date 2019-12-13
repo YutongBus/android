@@ -3,7 +3,7 @@ package com.orange.yutongbus.YounUart;
 import static com.orange.yutongbus.YounUart.Command.StringHexToByte;
 
 public class Version {
-    public String version="";
+    public static String version="";
     public String year="";
     public String month="";
     public String day="";

@@ -34,14 +34,14 @@ class TriggerInsert : RootFragement() {
         }
         rootview.insert.setOnClickListener {
             act.ShowDaiLog(R.layout.insertobd, true, false, DaiSetUp {
-                it.findViewById<TextView>(R.id.cancel).setOnClickListener {
-                    act.DaiLogDismiss()
-                }
-                it.findViewById<TextView>(R.id.Yes).setOnClickListener {
-                    act.DaiLogDismiss()
-                    act.ChangePage(TriggerWriting(),R.id.frage,"TriggerWriting",true)
-                }
-            })
+            it.findViewById<TextView>(R.id.cancel).setOnClickListener {
+                act.DaiLogDismiss()
+            }
+            it.findViewById<TextView>(R.id.Yes).setOnClickListener {
+                act.DaiLogDismiss()
+                act.ChangePage(TriggerWriting(),R.id.frage,"TriggerWriting",true)
+            }
+        })
           
         }
         return rootview

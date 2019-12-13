@@ -39,7 +39,7 @@ class TriggerSuccess : RootFragement() {
                 }
                 it.findViewById<TextView>(R.id.Yes).setOnClickListener {
                     act.DaiLogDismiss()
-                    act.supportFragmentManager.popBackStack("WheelTagUp",0)
+                    act.GoBack("WheelTagUp")
                 } 
             })
          

@@ -9,38 +9,64 @@ import android.view.KeyEvent
 import android.view.View
 import com.orange.yutongbus.Frag.Home
 import android.widget.ImageView
+import android.widget.TextView
 import com.orange.blelibrary.blelibrary.BleActivity
 import com.orange.blelibrary.blelibrary.Callback.DaiSetUp
 import com.orange.blelibrary.blelibrary.RootFragement
-import com.orange.yutongbus.Frag.CoolPressure
 import com.orange.yutongbus.Frag.WheelTagUp
 import com.orange.yutongbus.YounUart.Command
-import com.orange.yutongbus.lib.hardware.HardwareApp
 import com.orange.yutongbus.util.DiaLogSetting
+import kotlinx.android.synthetic.main.logout.*
+import kotlin.math.floor
 
 
 class MainActivity : BleActivity() {
     //處理頁面切換後，toolbar的事件更改
     override fun ChangePageListener(tag:String,frag:Fragment){
         Log.d("switch", tag)
+
         if (tag == "Home") {
             backim.visibility = View.GONE
         } else {
             backim.visibility = View.VISIBLE
         }
+
+        when (tag) {
+            "SpareSelect" ->
+            {
+                Title.text = "轮位标定数量选择"
+            }
+            "CoolPressure" ->
+            {
+                Title.text = "胎压设定"
+            }
+            "TriggerInsert" ->
+            {
+                Title.text = "标定资料写入"
+            }
+        }
+
             CanGoBack=tag != "TriggerWriting"
         if (tag == "WheelTagUp" || tag == "Home") {
             rightop.visibility = View.VISIBLE
             when (tag) {
                 "Home" -> {
+                    Title.text = "YUTONG"
                     rightop.setImageResource(R.mipmap.sign_out)
-                    rightop.setOnClickListener { }
+                    rightop.setOnClickListener {
+                        ShowDaiLog(R.layout.logout,true,false, DaiSetUp {
+                            mDialog!!.Yes.setOnClickListener { android.os.Process.killProcess(android.os.Process.myPid()) }
+                            mDialog!!.cancel.setOnClickListener {  DaiLogDismiss() }})
+                    }
                 }
                 "WheelTagUp" -> {
+                    Title.text = "轮位标定"
                     rightop.setImageResource(R.mipmap.select_tire)
                     rightop.setOnClickListener {
                         ShowDaiLog(R.layout.activity_reselect__tire,true,false, DaiSetUp {  })
                         Dialoginit.Reselect_Tire(mDialog!!,(frag as WheelTagUp))
+                        //Title.text = "轮位标定"
+
                     }
                 }
             }
@@ -54,13 +80,15 @@ class MainActivity : BleActivity() {
     var Memory=Memory()
     lateinit var backim: ImageView
     lateinit var rightop: ImageView
+    lateinit var Title: TextView
 //    lateinit var anima
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Thread{Command.ReOpen()}.start()
+        Thread{ Command.ReOpen()}.start()
         backim = findViewById(R.id.backim)
         rightop = findViewById(R.id.RightTop)
+        Title= findViewById(R.id.Title)
         ChangePage(Home(), R.id.frage, "Home", false)
 //    ChangePage(CoolPressure(), R.id.frage, "CoolPressure", false)
     }

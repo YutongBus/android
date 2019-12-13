@@ -2,11 +2,11 @@ package com.orange.yutongbus.Frag
 
 
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import com.orange.blelibrary.blelibrary.Callback.DaiSetUp
 import com.orange.blelibrary.blelibrary.RootFragement
@@ -14,7 +14,9 @@ import com.orange.yutongbus.MainActivity
 
 import com.orange.yutongbus.R
 import com.orange.yutongbus.YounUart.Command
+import kotlinx.android.synthetic.main.fragment_wheel_tag_up.*
 import kotlinx.android.synthetic.main.fragment_wheel_tag_up.view.*
+import kotlinx.android.synthetic.main.fragment_wheel_tag_up.view.T1
 import java.lang.Thread.sleep
 import java.util.ArrayList
 
@@ -38,20 +40,92 @@ companion object{
     var 十轮配置=6;
 }
     var tirecount=0;
+
     var Triggerid=ArrayList<String>()
     var IDtext=ArrayList<TextView>()
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //if(isInitialized()){return rootview}  //留住現在Fragement之畫面
         rootview=inflater.inflate(R.layout.fragment_wheel_tag_up, container, false)
+
         UpdateUi()
+        //Triggerid.remove("123456")
         rootview.SetUp.setOnClickListener {
             if(Triggerid.size==tirecount){
                 (activity as MainActivity).Memory.Triggerid=Triggerid
                 act.ChangePage(CoolPressure(),R.id.frage,"CoolPressure",true)
             }else{Trigger()}
+
         }
+
+        rootview.nsbt.setOnClickListener {
+
+            if(SpareSelect.havespare){
+                rootview.spbt.setBackgroundResource(R.color.white)
+                rootview.nsbt.setBackgroundResource(R.color.blue)
+                rootview.spbt.setTextColor(resources.getColor(R.color.black))
+                rootview.nsbt.setTextColor(resources.getColor(R.color.white))
+                rootview.t11.text=""
+                rootview.spare.visibility=View.GONE
+
+                //此為備胎模式時，已有偵測到備胎之判斷
+                if(Triggerid.size == tirecount)
+                {
+                    Triggerid.remove(rootview.id11.text)
+                    rootview.id11.text=""
+                    //rootview.SetUp.text="下一步"
+                }
+
+                SpareSelect.havespare=false
+                SpareSelect.ShowDialog=false
+
+                //備胎與無備胎轉換
+                TrunUi()
+
+                //此從備胎轉換到無備胎時，已都偵測完輪胎之判斷
+                if(Triggerid.size == tirecount)
+                {
+                    rootview.SetUp.text="下一步"
+                }
+
+            }
+
+        }
+
+        rootview.spbt.setOnClickListener {
+
+            if(type != 二轮配置)
+            {
+                //從無備胎偵測完輪胎後，轉換到有備胎的判斷
+                if (Triggerid.size == tirecount && id11.text == "")
+                {
+                    rootview.SetUp.text = "触发传感器"
+                    rootview.spare.setImageResource(R.mipmap.img_tire_red)
+                }
+
+                SpareSelect.ShowDialog = false
+                SpareSelect.havespare = true
+
+                rootview.spbt.setBackgroundResource(R.color.blue)
+                rootview.nsbt.setBackgroundResource(R.color.white)
+                rootview.spbt.setTextColor(resources.getColor(R.color.white))
+                rootview.nsbt.setTextColor(resources.getColor(R.color.black))
+
+                rootview.t11.text = "备胎"
+                rootview.spare.visibility = View.VISIBLE
+
+                TrunUi()
+            }
+            else
+            {
+                act.ShowDaiLog(R.layout.trigger_two_tire_error,true,false, DaiSetUp {  })
+            }
+        }
+
         IDtext.clear()
         Triggerid.clear()
         IDtext.add(rootview.id1)
@@ -75,7 +149,10 @@ companion object{
         Trigger()
     }
     fun Trigger(){
-        act.ShowDaiLog(R.layout.loading_dialog,false,true, DaiSetUp {  })
+        act.ShowDaiLog(R.layout.loading_dialog,false,true, DaiSetUp {
+
+        })
+
         Thread{
 val a=Command.Trigger()
             sleep(1000)
@@ -83,10 +160,20 @@ val a=Command.Trigger()
                 act.DaiLogDismiss()
                 if(!a.equals("false") && !Triggerid.contains(a) && Triggerid.size<tirecount){
                     Triggerid.add(a)
-                    if(Triggerid.size==tirecount&&SpareSelect.havespare){
+                    Set_Green(Triggerid.size-1)
+                    if(Triggerid.size==tirecount&&SpareSelect.havespare)
+                    {
                         IDtext.get(IDtext.size-1).text=a
-                    }else{IDtext.get(Triggerid.size-1).text=a}
-                    if(Triggerid.size==tirecount){rootview.SetUp.text="下一步"}
+                    }
+                    else
+                    {
+                        IDtext.get(Triggerid.size-1).text=a
+                        //rootview.T1.setBackgroundResource(R.mipmap.img_tire_green)
+                    }
+                    if(Triggerid.size==tirecount)
+                    {
+                        rootview.SetUp.text="下一步"
+                    }
                 }else{
 if(a.equals("false")){
     act.ShowDaiLog(R.layout.triggererror,true,false, DaiSetUp {  })
@@ -100,32 +187,13 @@ if(a.equals("false")){
         }.start()
 
     }
-    fun UpdateUi(){
-        if(SpareSelect.havespare){
-            rootview.spbt.setBackgroundResource(R.color.blue)
-            rootview.nsbt.setBackgroundResource(R.color.white)
-            rootview.spbt.setTextColor(resources.getColor(R.color.white))
-            rootview.nsbt.setTextColor(resources.getColor(R.color.blue))
-            rootview.nsbt.setOnClickListener {
-                SpareSelect.ShowDialog=false
-                SpareSelect.havespare=false
-                act.GoBack()
-            }
-        }else{
-            rootview.spbt.setBackgroundResource(R.color.white)
-            rootview.nsbt.setBackgroundResource(R.color.blue)
-            rootview.spbt.setTextColor(resources.getColor(R.color.blue))
-            rootview.nsbt.setTextColor(resources.getColor(R.color.white))
-            rootview.spbt.setOnClickListener {
-                SpareSelect.havespare=true
-                SpareSelect.ShowDialog=false
-                act.GoBack()
-            }
-        }
+
+    fun TrunUi(){
         when(type){
             二轮配置->{ rootview.carim.setImageResource(R.mipmap.img_two_tires)
                 tirecount=2
-                rootview.hintext.text=if(SpareSelect.havespare) "二轮配置+备胎" else "二轮配置"}
+                rootview.hintext.text=if(SpareSelect.havespare) "二轮配置" else "二轮配置"
+            }
             四轮配置->{rootview.carim.setImageResource(if(SpareSelect.havespare) R.mipmap.img_four_tires_spare else R.mipmap.img_four_tires)
                 tirecount=4
                 rootview.hintext.text=if(SpareSelect.havespare) "四轮配置+备胎" else "四轮配置"}
@@ -143,9 +211,111 @@ if(a.equals("false")){
                 rootview.hintext.text=if(SpareSelect.havespare) "十轮配置+备胎" else "十轮配置"}
         }
         if(SpareSelect.havespare){tirecount++}
+    }
+
+    fun UpdateUi(){
+
+        SpareSelect.ShowDialog=false
+
+        if(SpareSelect.havespare){
+            rootview.spbt.setBackgroundResource(R.color.blue)
+            rootview.nsbt.setBackgroundResource(R.color.white)
+            rootview.spbt.setTextColor(resources.getColor(R.color.white))
+            rootview.nsbt.setTextColor(resources.getColor(R.color.black))
+
+        }else{
+            rootview.spbt.setBackgroundResource(R.color.white)
+            rootview.nsbt.setBackgroundResource(R.color.blue)
+            rootview.spbt.setTextColor(resources.getColor(R.color.black))
+            rootview.nsbt.setTextColor(resources.getColor(R.color.white))
+
+        }
+
+        TrunUi()
         ResetView()
     }
+
+    fun Set_Green(position:Int)
+    {
+        val Tireimage = ArrayList<ImageView>()
+        when(type)
+        {
+            二轮配置->{
+            Tireimage.add(rootview.T1)
+            Tireimage.add(rootview.T2)
+                Tireimage.add(rootview.spare)
+            }
+            四轮配置->{
+            Tireimage.add(rootview.T1)
+            Tireimage.add(rootview.T2)
+            Tireimage.add(rootview.T7)
+            Tireimage.add(rootview.T10)
+                Tireimage.add(rootview.spare)
+
+            }
+            六轮配置->{
+            Tireimage.add(rootview.T1)
+            Tireimage.add(rootview.T2)
+            Tireimage.add(rootview.T7)
+            Tireimage.add(rootview.T8)
+            Tireimage.add(rootview.T9)
+            Tireimage.add(rootview.T10)
+
+                Tireimage.add(rootview.spare)
+            }
+            八轮配置中->{
+            Tireimage.add(rootview.T1)
+            Tireimage.add(rootview.T2)
+            Tireimage.add(rootview.T7)
+            Tireimage.add(rootview.T10)
+
+                Tireimage.add(rootview.spare)
+            }
+            八轮配置後->{
+            Tireimage.add(rootview.T1)
+            Tireimage.add(rootview.T2)
+            Tireimage.add(rootview.T3)
+            Tireimage.add(rootview.T6)
+            Tireimage.add(rootview.T7)
+            Tireimage.add(rootview.T8)
+            Tireimage.add(rootview.T9)
+            Tireimage.add(rootview.T10)
+
+                Tireimage.add(rootview.spare)
+            }
+            十轮配置->{
+            Tireimage.add(rootview.T1)
+            Tireimage.add(rootview.T2)
+            Tireimage.add(rootview.T3)
+            Tireimage.add(rootview.T4)
+            Tireimage.add(rootview.T5)
+            Tireimage.add(rootview.T6)
+            Tireimage.add(rootview.T7)
+            Tireimage.add(rootview.T8)
+            Tireimage.add(rootview.T9)
+            Tireimage.add(rootview.T10)
+
+                Tireimage.add(rootview.spare)
+            }
+        }
+        Tireimage[position].setImageResource(R.mipmap.img_tire_green)
+    }
+
 fun ResetView(){
+    Triggerid.clear()
+    rootview.SetUp.text="触发传感器"
+    rootview.T1.setImageResource(R.mipmap.img_tire_red)
+    rootview.T2.setImageResource(R.mipmap.img_tire_red)
+    rootview.T3.setImageResource(R.mipmap.img_tire_red)
+    rootview.T4.setImageResource(R.mipmap.img_tire_red)
+    rootview.T5.setImageResource(R.mipmap.img_tire_red)
+    rootview.T6.setImageResource(R.mipmap.img_tire_red)
+    rootview.T7.setImageResource(R.mipmap.img_tire_red)
+    rootview.T8.setImageResource(R.mipmap.img_tire_red)
+    rootview.T9.setImageResource(R.mipmap.img_tire_red)
+    rootview.T10.setImageResource(R.mipmap.img_tire_red)
+    rootview.spare.setImageResource(R.mipmap.img_tire_red)
+
     rootview.t1.text=""
     rootview.t2.text=""
     rootview.t3.text=""
@@ -178,6 +348,7 @@ fun ResetView(){
     rootview.T8.visibility=View.GONE
     rootview.T9.visibility=View.GONE
     rootview.T10.visibility=View.GONE
+
     if(SpareSelect.havespare){
         rootview.t11.text="备胎"
         rootview.spare.visibility=View.VISIBLE
@@ -259,6 +430,10 @@ fun ResetView(){
                 rootview.t2.text="2"
                 rootview.t3.text="3"
                 rootview.t4.text="4"
+                //rootview.T3.setImageResource(R.mipmap.img_tire_red)
+                //rootview.T6.visibility=View.VISIBLE
+                //rootview.T8.visibility=View.VISIBLE
+                //rootview.T9.visibility=View.VISIBLE
                 rootview.number7.setImageResource(R.mipmap.trree)
                 rootview.number10.setImageResource(R.mipmap.four)
             }

@@ -35,12 +35,12 @@ class DiaLogSetting{
             mDialog.dismiss()
         }
         (mDialog.findViewById(R.id.r4) as RelativeLayout).setOnClickListener {
-            WheelTagUp.type = WheelTagUp.八轮配置後
+            WheelTagUp.type = WheelTagUp.八轮配置中
             tagup.UpdateUi()
             mDialog.dismiss()
         }
         (mDialog.findViewById(R.id.r5) as RelativeLayout).setOnClickListener {
-            WheelTagUp.type = WheelTagUp.八轮配置中
+            WheelTagUp.type = WheelTagUp.八轮配置後
             tagup.UpdateUi()
             mDialog.dismiss()
         }

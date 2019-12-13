@@ -23,7 +23,7 @@ public class CommonApi {
 	public native void closeCom(int fd);
 	
 	static {  
-		System.loadLibrary("zyapi_common");
-	}
+
+	System.loadLibrary("zyapi_common");	}
 	
 }

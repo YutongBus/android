@@ -198,10 +198,14 @@
                             android:layout_height="match_parent" android:id="@+id/textView11"
                             android:gravity="center" android:textColor="@color/white"
                             android:textSize="25sp"/>
+
                     <ImageView
+                            android:id="@+id/imageView11"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" app:srcCompat="@mipmap/eiwheel"
-                            android:id="@+id/imageView11" android:layout_weight="1" android:paddingLeft="15dp"/>
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:paddingLeft="15dp"
+                            app:srcCompat="@mipmap/eight_wheel" />
                     <TextView
                             android:text=">"
                             android:layout_width="50dp"
@@ -244,10 +248,14 @@
                             android:layout_height="match_parent" android:id="@+id/textView11"
                             android:gravity="center" android:textColor="@color/white"
                             android:textSize="25sp"/>
+
                     <ImageView
+                            android:id="@+id/imageView11"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" app:srcCompat="@mipmap/eiwheelsec"
-                            android:id="@+id/imageView11" android:layout_weight="1" android:paddingLeft="15dp"/>
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:paddingLeft="15dp"
+                            app:srcCompat="@mipmap/eiwheel" />
                     <TextView
                             android:text=">"
                             android:layout_width="50dp"
