@@ -323,7 +323,19 @@ public class HardwareApp extends BaseHardware {
             }
         }
     }
-
+    /**
+     * 打开PB5
+     */
+    public void openPB5 (boolean ifOpen) {
+        Log.d(TAG, "openPB5: "+ifOpen);
+        if (ifOpen) {
+            // 打开
+            HardwareApp.send(new byte[]{0x1B,0x23,0x23,0x35,0x39,0x4F,0x4E});
+        } else {
+            // 关闭
+            HardwareApp.send(new byte[]{0x1B,0x23,0x23,0x35,0x39,0x4F,0x46});
+        }
+    }
     /**
      * 设置GPIO1电压状态
      */

@@ -140,6 +140,8 @@ companion object{
         IDtext.add(rootview.id10)
         IDtext.add(rootview.id11)
         super.onCreateView(inflater, container, savedInstanceState)
+        SetPro("tirecount",type)
+            SetPro("havespare",SpareSelect.havespare)
         return rootview
     }
 
@@ -211,6 +213,7 @@ if(a.equals("false")){
                 rootview.hintext.text=if(SpareSelect.havespare) "十轮配置+备胎" else "十轮配置"}
         }
         if(SpareSelect.havespare){tirecount++}
+        SetPro("havespare",SpareSelect.havespare)
     }
 
     fun UpdateUi(){

@@ -2,6 +2,7 @@ package com.orange.yutongbus
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
@@ -13,6 +14,7 @@ import android.widget.TextView
 import com.orange.blelibrary.blelibrary.BleActivity
 import com.orange.blelibrary.blelibrary.Callback.DaiSetUp
 import com.orange.blelibrary.blelibrary.RootFragement
+import com.orange.yutongbus.Frag.SpareSelect
 import com.orange.yutongbus.Frag.WheelTagUp
 import com.orange.yutongbus.YounUart.Command
 import com.orange.yutongbus.util.DiaLogSetting
@@ -81,7 +83,6 @@ class MainActivity : BleActivity() {
     lateinit var backim: ImageView
     lateinit var rightop: ImageView
     lateinit var Title: TextView
-//    lateinit var anima
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -120,6 +121,22 @@ class MainActivity : BleActivity() {
 
     override fun onResume() {
         super.onResume()
+        val profilePreferences = getSharedPreferences("Setting", Context.MODE_PRIVATE)
+        val data=profilePreferences.getInt("tirecount",0)
+        val havespare=profilePreferences.getBoolean("havespare",false)
+        if(data!=0){
+            ShowDaiLog(R.layout.keep_trigger,false,false, DaiSetUp {
+                it.findViewById<TextView>(R.id.cancel).setOnClickListener {
+                    DaiLogDismiss()
+                }
+                it.findViewById<TextView>(R.id.Yes).setOnClickListener {
+                    DaiLogDismiss()
+                    WheelTagUp.type=data
+                    SpareSelect.havespare=havespare
+                    ChangePage(WheelTagUp(),R.id.frage,"WheelTagUp",true)
+                }
+            })
+        }
         SetNaVaGation(true)
     }
 }
