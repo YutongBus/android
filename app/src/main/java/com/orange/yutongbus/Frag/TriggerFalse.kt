@@ -36,24 +36,44 @@ class TriggerFalse : RootFragement() {
 
         when(TriggerWriting.error_type)
         {
+            //六輪(主副機)、八輪、十輪
             TriggerWriting.版本不一樣 ->
             {
                 rootview.text.text= "主副机版本新旧不一样"
             }
+
+
             TriggerWriting.錯誤 ->
             {
-                rootview.text.text= "错误 \n  请检查主副机是否有插电"
+                //rootview.text.text= "错误 \n  请检查主副机是否有插电"
+                if(TriggerWriting.Main_or_Auxiliary == TriggerWriting.主機){rootview.text.text= "主机标定完成\n错误\n  请检查主机是否有插电"}
+                if(TriggerWriting.Main_or_Auxiliary == TriggerWriting.主副機){rootview.text.text= "主机标定完成\n错误\n  请检查主副机是否有插电"}
+
             }
 
+            //八輪、十輪
             TriggerWriting.皆為舊或新 ->
             {
-                rootview.text.text=if(WheelTagUp.type== WheelTagUp.十轮配置)"十轮版本需为新版" else "错误 \n  请检查主副机是否有插电"
+                if(TriggerWriting.Main_or_Auxiliary == TriggerWriting.主機){rootview.text.text= "主机标定完成\n错误\n  请检查主机是否有插电"}
+                if(TriggerWriting.Main_or_Auxiliary == TriggerWriting.主副機){rootview.text.text= "主机标定完成\n错误\n  请检查主副机是否有插电"}
+                when(WheelTagUp.type){
+                    WheelTagUp.二轮配置 ->{rootview.text.text="主机标定完成\n错误\n 请检查主机是否有插电"}
+                    WheelTagUp.四轮配置->{rootview.text.text="十轮版本需为新版" }
+                    WheelTagUp.六轮配置 ->{rootview.text.text="十轮版本需为新版" }
+                    WheelTagUp.八轮配置中->{rootview.text.text="十轮版本需为新版" }
+                    WheelTagUp.八轮配置後 ->{rootview.text.text="十轮版本需为新版" }
+                    WheelTagUp.十轮配置->{rootview.text.text="十轮版本需为新版" }
+                }
+                rootview.text.text="十轮版本需为新版"
+
 //                act.ShowDaiLog(R.layout.trigger_version_error,true,false, DaiSetUp { it.findViewById<TextView>(R.id.textView23).text = "错误 \n  请检查主副机是否有插电" })
 //                if(WheelTagUp.type== WheelTagUp.十轮配置) {
 //                    act.ShowDaiLog(R.layout.trigger_version_error, true, false, DaiSetUp { it.findViewById<TextView>(R.id.textView23).text = "十轮版本需为新版" })
 //                }
             }
-
+            TriggerWriting.TIME_OUT->{
+                rootview.text.text= "資料寫入失敗"
+            }
         }
 
         rootview.exit.setOnClickListener {

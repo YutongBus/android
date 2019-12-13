@@ -33,6 +33,7 @@ class TriggerWriting : RootFragement() {
     companion object{
         var error_type=0;
         val 錯誤=1;
+        val TIME_OUT=4;
         val 版本不一樣=2;
         val 皆為舊或新=3;
 
@@ -46,6 +47,7 @@ class TriggerWriting : RootFragement() {
         savedInstanceState: Bundle?
     ): View? {
         rootview=inflater.inflate(R.layout.fragment_trigger_writing, container, false)
+        error_type=TIME_OUT
         Thread{
                     var success=false
                     val memory=(activity as MainActivity).Memory
@@ -56,26 +58,41 @@ class TriggerWriting : RootFragement() {
                     if(WheelTagUp.type ==WheelTagUp.二轮配置 ||WheelTagUp.type ==WheelTagUp.四轮配置)
                     {
                         Main_or_Auxiliary = 主機
-                        error_type = 錯誤
+                        //error_type = 錯誤
 
-                        for (i in 0 until memory.Triggerid.size) {
-                            when(WheelTagUp.type)
-                            {
-                                WheelTagUp.二轮配置->
-                                { success = Command.WriteId(Memory.兩輪HEX[i], memory.Triggerid[Memory.兩輪順序[i]])}
-
-
-                                WheelTagUp.四轮配置->
-                                {success = Command.WriteId(Memory.四輪HEX[i], memory.Triggerid[Memory.四輪順序[i]])}
-
-                            }
-
-                            if (!success) {
-                                break
-                            }
+                        if (ceckversion == 0) {
+                            error_type = 錯誤
+                            handler.post { act.ChangePage(TriggerFalse(), R.id.frage, "TriggerFalse", true) }
                         }
 
-                        /*
+                        if (ceckversion == 2 || ceckversion == 3) {
+                            error_type = 皆為舊或新
+
+                            for (i in 0 until memory.Triggerid.size) {
+                                when (WheelTagUp.type) {
+                                    WheelTagUp.二轮配置 -> {
+                                        success = Command.WriteId(
+                                            Memory.兩輪HEX[i],
+                                            memory.Triggerid[Memory.兩輪順序[i]]
+                                        )
+                                    }
+
+
+                                    WheelTagUp.四轮配置 -> {
+                                        success = Command.WriteId(
+                                            Memory.四輪HEX[i],
+                                            memory.Triggerid[Memory.四輪順序[i]]
+                                        )
+                                    }
+
+                                }
+
+                                if (!success) {
+                                    break
+                                }
+                            }
+
+                            /*
                         if (success) {
                             for (i in 0 until memory.Triggerid.size) {
                                 success = Command.WriteSpId(Memory.兩輪HEX[i], memory.Triggerid[Memory.兩輪順序[i]])
@@ -85,21 +102,24 @@ class TriggerWriting : RootFragement() {
                             }
                         }
                         */
-                        if (success) {
-                            success = Command.WritePressure(memory.Pressure)
-                        }
-                        else
-                        {
-                            //error_type = 錯誤
-                        }
+                            if (success) {
+                                success = Command.WritePressure(memory.Pressure)
+                            } else {
+                                //error_type = 錯誤
+                            }
 
-                        handler.post {
-                            act.ChangePage(
-                                if (success) TriggerSuccess() else TriggerFalse(),
-                                R.id.frage,
-                                if (success) {"TriggerSuccess"} else {"TriggerFalse"} ,
-                                true
-                            )
+                            handler.post {
+                                act.ChangePage(
+                                    if (success) TriggerSuccess() else TriggerFalse(),
+                                    R.id.frage,
+                                    if (success) {
+                                        "TriggerSuccess"
+                                    } else {
+                                        "TriggerFalse"
+                                    },
+                                    true
+                                )
+                            }
                         }
 
                     }
