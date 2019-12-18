@@ -3,6 +3,7 @@ package com.orange.yutongbus.Frag
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +34,7 @@ class TriggerFalse : RootFragement() {
         savedInstanceState: Bundle?
     ): View? {
        rootview=inflater.inflate(R.layout.fragment_trigger_false, container, false)
-
+Log.e("errortype","${TriggerWriting.error_type}")
         when(TriggerWriting.error_type)
         {
             //六輪(主副機)、八輪、十輪
@@ -46,25 +47,25 @@ class TriggerFalse : RootFragement() {
             TriggerWriting.錯誤 ->
             {
                 //rootview.text.text= "错误 \n  请检查主副机是否有插电"
-                if(TriggerWriting.Main_or_Auxiliary == TriggerWriting.主機){rootview.text.text= "主机标定完成\n错误\n  请检查主机是否有插电"}
-                if(TriggerWriting.Main_or_Auxiliary == TriggerWriting.主副機){rootview.text.text= "主机标定完成\n错误\n  请检查主副机是否有插电"}
+                if(TriggerWriting.Main_or_Auxiliary == TriggerWriting.主機){rootview.text.text= "读取版本错误"}
+                if(TriggerWriting.Main_or_Auxiliary == TriggerWriting.主副機){rootview.text.text= "读取版本错误"}
 
             }
 
             //八輪、十輪
             TriggerWriting.皆為舊或新 ->
             {
-                if(TriggerWriting.Main_or_Auxiliary == TriggerWriting.主機){rootview.text.text= "主机标定完成\n错误\n  请检查主机是否有插电"}
-                if(TriggerWriting.Main_or_Auxiliary == TriggerWriting.主副機){rootview.text.text= "主机标定完成\n错误\n  请检查主副机是否有插电"}
+                //if(TriggerWriting.Main_or_Auxiliary == TriggerWriting.主機){rootview.text.text= "主机标定完成\n错误\n  请检查主机是否有插电"}
+                //if(TriggerWriting.Main_or_Auxiliary == TriggerWriting.主副機){rootview.text.text= "主机标定完成\n错误\n  请检查主副机是否有插电"}
                 when(WheelTagUp.type){
-                    WheelTagUp.二轮配置 ->{rootview.text.text="主机标定完成\n错误\n 请检查主机是否有插电"}
-                    WheelTagUp.四轮配置->{rootview.text.text="十轮版本需为新版" }
-                    WheelTagUp.六轮配置 ->{rootview.text.text="十轮版本需为新版" }
-                    WheelTagUp.八轮配置中->{rootview.text.text="十轮版本需为新版" }
-                    WheelTagUp.八轮配置後 ->{rootview.text.text="十轮版本需为新版" }
-                    WheelTagUp.十轮配置->{rootview.text.text="十轮版本需为新版" }
+                    WheelTagUp.二轮配置 ->{rootview.text.text="资料写入失败\n错误\n 请检查主机是否有插电"}
+                    WheelTagUp.四轮配置 ->{rootview.text.text="资料写入失败\n错误\n 请检查主机是否有插电"}
+                    WheelTagUp.六轮配置 ->{if(TriggerWriting.Main_or_Auxiliary == TriggerWriting.主機){rootview.text.text="资料写入失败\n错误\n 请检查主机是否有插电"}else{rootview.text.text="资料写入失败\n错误\n 请检查主副机是否有插电"} }
+                    WheelTagUp.八轮配置中 ->{rootview.text.text="资料写入失败\n错误\n 请检查主副机是否有插电" }
+                    WheelTagUp.八轮配置後 ->{rootview.text.text="资料写入失败\n错误\n 请检查主副机是否有插电" }
+                    WheelTagUp.十轮配置 ->{rootview.text.text="资料写入失败\n错误\n 请检查主副机是否有插电"  }
                 }
-                rootview.text.text="十轮版本需为新版"
+                //rootview.text.text="十轮版本需为新版"
 
 //                act.ShowDaiLog(R.layout.trigger_version_error,true,false, DaiSetUp { it.findViewById<TextView>(R.id.textView23).text = "错误 \n  请检查主副机是否有插电" })
 //                if(WheelTagUp.type== WheelTagUp.十轮配置) {
@@ -72,7 +73,7 @@ class TriggerFalse : RootFragement() {
 //                }
             }
             TriggerWriting.TIME_OUT->{
-                rootview.text.text= "資料寫入失敗"
+                rootview.text.text= "资料写入失败"
             }
         }
 

@@ -39,7 +39,7 @@ class TriggerWriting : RootFragement() {
 
         var Main_or_Auxiliary ="";
         val 主機="主机";
-        val 主副機="主机，从机";
+        val 主副機="主机，副机";
     }
 
     override fun onCreateView(
@@ -47,7 +47,6 @@ class TriggerWriting : RootFragement() {
         savedInstanceState: Bundle?
     ): View? {
         rootview=inflater.inflate(R.layout.fragment_trigger_writing, container, false)
-        error_type=TIME_OUT
         Thread{
                     var success=false
                     val memory=(activity as MainActivity).Memory
@@ -58,15 +57,11 @@ class TriggerWriting : RootFragement() {
                     if(WheelTagUp.type ==WheelTagUp.二轮配置 ||WheelTagUp.type ==WheelTagUp.四轮配置)
                     {
                         Main_or_Auxiliary = 主機
-                        //error_type = 錯誤
-
                         if (ceckversion == 0) {
-                            error_type = 錯誤
                             handler.post { act.ChangePage(TriggerFalse(), R.id.frage, "TriggerFalse", true) }
                         }
 
                         if (ceckversion == 2 || ceckversion == 3) {
-                            error_type = 皆為舊或新
 
                             for (i in 0 until memory.Triggerid.size) {
                                 when (WheelTagUp.type) {
@@ -104,13 +99,12 @@ class TriggerWriting : RootFragement() {
                         */
                             if (success) {
                                 success = Command.WritePressure(memory.Pressure)
-                            } else {
-                                //error_type = 錯誤
                             }
 
                             handler.post {
                                 act.ChangePage(
-                                    if (success) TriggerSuccess() else TriggerFalse(),
+                                    if (success) TriggerSuccess()
+                                    else TriggerFalse(),
                                     R.id.frage,
                                     if (success) {
                                         "TriggerSuccess"
@@ -127,18 +121,15 @@ class TriggerWriting : RootFragement() {
             {
                         //var ceckversion=Command.CheckVersion(wheel,wheel_length)
                 if (ceckversion == 0) {
-                    error_type = 錯誤
                     handler.post { act.ChangePage(TriggerFalse(), R.id.frage, "TriggerFalse", true) }
                 }
 
                 if (ceckversion == 1 ) {
-                    error_type = 版本不一樣
                     handler.post { act.ChangePage(TriggerFalse(), R.id.frage, "TriggerFalse", true) }
                 }
 
                 if (ceckversion == 2 || ceckversion == 3)
                 {
-                    error_type = 皆為舊或新
                     Main_or_Auxiliary = 主副機
 
                      for (i in 0 until memory.Triggerid.size) {
@@ -232,19 +223,15 @@ class TriggerWriting : RootFragement() {
 
                 if(ceckversion == 0)
                 {
-                    error_type = 錯誤
                     handler.post { act.ChangePage(TriggerFalse(), R.id.frage, "TriggerFalse", true) }
                 }
                 if(ceckversion == 1)
                 {
-                    error_type = 版本不一樣
                     handler.post { act.ChangePage(TriggerFalse(), R.id.frage, "TriggerFalse", true) }
                 }
                 if(ceckversion == 2 || ceckversion == 3)
                 {
                     Main_or_Auxiliary = 主副機
-                    error_type = 錯誤
-
                     for (i in 0 until memory.Triggerid.size) {
                         when(WheelTagUp.type)
                         {
@@ -269,11 +256,6 @@ class TriggerWriting : RootFragement() {
                     if (success) {
                         success = Command.WritePressure(memory.Pressure)
                     }
-                    else
-                    {
-                        //error_type = 錯誤
-                    }
-
                     handler.post {
                         act.ChangePage(
                             if (success) TriggerSuccess() else TriggerFalse(),
@@ -286,8 +268,6 @@ class TriggerWriting : RootFragement() {
                 if(ceckversion == 4)
                 {
                     Main_or_Auxiliary = 主機
-                    error_type = 錯誤
-
                     for (i in 0 until memory.Triggerid.size)
                     {
                         success = Command.WriteId(Memory.六輪HEX[i], memory.Triggerid[Memory.六輪順序[i]])
@@ -296,15 +276,9 @@ class TriggerWriting : RootFragement() {
                             break
                         }
                     }
-
                     if (success) {
                         success = Command.WritePressure(memory.Pressure)
                     }
-                    else
-                    {
-                        //error_type = 錯誤
-                    }
-
                     handler.post {
                         act.ChangePage(
                             if (success) TriggerSuccess() else TriggerFalse(),
@@ -314,9 +288,6 @@ class TriggerWriting : RootFragement() {
                         )
                     }
                 }
-
-
-
             }
         }.start()
         return rootview

@@ -1,6 +1,8 @@
 package com.orange.yutongbus.YounUart;
 
 import android.util.Log;
+
+import com.orange.yutongbus.Frag.TriggerWriting;
 import com.orange.yutongbus.lib.hardware.HardwareApp;
 import com.orange.yutongbus.lib.utils.StringUtils;
 
@@ -145,6 +147,7 @@ public class Command {
                 temp=M_version.substring(0,2);
                 if((temp.compareTo("FF")==0))//主機無反應
                 {
+                    TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get錯誤());
                     return  0;
                 }
                 else
@@ -152,10 +155,12 @@ public class Command {
                     M_V=Command.StringVersionToInt(M_version);
                     if(M_V>=14)//nn
                     {
+                        TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get皆為舊或新());
                         return 3;
                     }
                     else if(M_V<=13)
                     {
+                        TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get皆為舊或新());
                         return 2;
                     }
                 }
@@ -167,6 +172,7 @@ public class Command {
                 temp=M_version.substring(0,2);
                 if(temp.compareTo("FF")==0)
                 {
+                    TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get錯誤());
                     return  0;
                 }
                 if(S_version.compareTo("FFFF")==0)
@@ -191,16 +197,18 @@ public class Command {
                         S_V=Command.StringVersionToInt(S_version);
                         if((M_V>=14 && S_V>=13))//nn
                         {
+                            TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get皆為舊或新());
                             return 3;
 
                         }
                         else if((M_V<=13 && S_V<=12))//oo
                         {
-
+                            TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get皆為舊或新());
                             return 2;
                         }
                         else
                         {
+                            TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get版本不一樣());
                             return 1;
                         }
                     }
@@ -210,17 +218,18 @@ public class Command {
                     M_V=Command.StringVersionToInt(M_version);
                     S_V=Command.StringVersionToInt(S_version);
                     if((M_V>=14 && S_V>=13))//nn
-                    {
+                    {TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get皆為舊或新());
                         return 3;
 
                     }
                     else if((M_V<=13 && S_V<=12))//oo
                     {
-
+                        TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get皆為舊或新());
                         return 2;
                     }
                     else
                     {
+                        TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get版本不一樣());
                         return 1;
                     }
                 }
@@ -231,7 +240,7 @@ public class Command {
                 S_version=Command.GetVersion_S().VersionData;
                 temp=M_version.substring(0,2);
                 if((temp.compareTo("FF")==0)||(S_version.compareTo("FFFF")==0))
-                {
+                {TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get錯誤());
                     return  0;
                 }
                 else
@@ -239,17 +248,17 @@ public class Command {
                     M_V=Command.StringVersionToInt(M_version);
                     S_V=Command.StringVersionToInt(S_version);
                     if((M_V>=14 && S_V>=13))//nn
-                    {
+                    {TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get皆為舊或新());
                         return 3;
-
                     }
                     else if((M_V<=13 && S_V<=12))//oo
                     {
-
+                        TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get皆為舊或新());
                         return 2;
                     }
                     else
                     {
+                        TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get版本不一樣());
                         return 1;
                     }
                 }
@@ -257,6 +266,7 @@ public class Command {
             }
             else
             {
+                TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get錯誤());
                 return 0;
             }
             /*
@@ -290,7 +300,9 @@ public class Command {
             */
 
         }
-        catch (Exception e){return 0;}
+        catch (Exception e){
+            TriggerWriting.Companion.setError_type(TriggerWriting.Companion.get錯誤());
+            return 0;}
     }
 
 
@@ -304,6 +316,7 @@ public class Command {
                 Date now=sdf.parse(sdf.format(new Date()));
                 double time=getDatePoor(now,past);
                 if(time>15){
+                    TriggerWriting.Companion.setError_type(TriggerWriting.Companion.getTIME_OUT());
                     ReOpen();
                     return false;}
                  if(Rx.length()==20){
@@ -324,6 +337,7 @@ public class Command {
                 Date now=sdf.parse(sdf.format(new Date()));
                 double time=getDatePoor(now,past);
                 if(time>15){
+                    TriggerWriting.Companion.setError_type(TriggerWriting.Companion.getTIME_OUT());
                     ReOpen();
                     return false;}
                 if(Rx.length()==20){
@@ -361,7 +375,9 @@ public class Command {
             while(true){
                 Date now=sdf.parse(sdf.format(new Date()));
                 double time=getDatePoor(now,past);
-                if(time>15||Rx.equals("F51C000301EB0A")){ if(time > 15){ReOpen();}return false;}
+                if(time>15||Rx.equals("F51C000301EB0A")){ if(time > 15){ReOpen();}
+                    TriggerWriting.Companion.setError_type(TriggerWriting.Companion.getTIME_OUT());
+                return false;}
                 if(Rx.length()==20){
                     return Rx.substring(4,6).equals(pr);
                 }
