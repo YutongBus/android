@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+
+
+    <RelativeLayout
+            android:id="@+id/r"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/button_blue">
+
+        <TextView
+                android:id="@+id/s1"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="+备胎"
+                android:textColor="#FFB438"
+                android:textSize="22sp" />
+
+        <ImageView
+                android:id="@+id/i1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/tire" />
+
+        <TextView
+                android:id="@+id/t1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/i1"
+                android:text="二轮配置"
+                android:textColor="@android:color/background_light"
+                android:textSize="30dp" />
+
+        <ImageView
+                android:id="@+id/ManyTireSetImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_toEndOf="@id/t1" />
+
+        <TextView
+                android:id="@+id/textView4"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text=">"
+                android:textColor="@android:color/background_light"
+                android:textSize="45sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,52 +1,84 @@
 package com.orange.yutongbus.Frag
 
 
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.app.Dialog
+import android.util.Log
+import android.view.KeyEvent
+import androidx.fragment.app.Fragment
 import android.widget.TextView
-import com.orange.blelibrary.blelibrary.Callback.DaiSetUp
-import com.orange.blelibrary.blelibrary.RootFragement
+import com.orange.jzchi.jzframework.JzActivity
+import com.orange.jzchi.jzframework.JzFragement
+import com.orange.jzchi.jzframework.callback.SetupDialog
 
 import com.orange.yutongbus.R
 import kotlinx.android.synthetic.main.fragment_trigger_insert.view.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class TriggerInsert : JzFragement(R.layout.fragment_trigger_insert) {
 
-/**
- * A simple [Fragment] subclass.
- *
- */
-class TriggerInsert : RootFragement() {
+    var focus=1
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        rootview = inflater.inflate(R.layout.fragment_trigger_insert, container, false)
+    override fun viewInit() {
+
+        rootview.insert.setBackgroundResource((R.color.button_orange))
+        rootview.reset.setBackgroundResource((R.mipmap.btn_rectangle_short))
+
         rootview.reset.setOnClickListener {
-            act.GoBack()
+            JzActivity.getControlInstance().goBack()
         }
         rootview.insert.setOnClickListener {
-            act.ShowDaiLog(R.layout.insertobd, true, false, DaiSetUp {
-            it.findViewById<TextView>(R.id.cancel).setOnClickListener {
-                act.DaiLogDismiss()
-            }
-            it.findViewById<TextView>(R.id.Yes).setOnClickListener {
-                act.DaiLogDismiss()
-                act.ChangePage(TriggerWriting(),R.id.frage,"TriggerWriting",true)
-            }
-        })
-          
+            JzActivity.getControlInstance().showDiaLog(R.layout.insertobd, true, false, object : SetupDialog {
+                override fun dismess() {
+
+                }
+
+                override fun keyevent(event: KeyEvent): Boolean {
+                    return true
+                }
+
+                override fun setup(rootview: Dialog) {
+                    rootview.findViewById<TextView>(R.id.cancel).setOnClickListener {
+                        rootview.dismiss()
+                    }
+                    rootview.findViewById<TextView>(R.id.Yes).setOnClickListener {
+                        rootview.dismiss()
+                        JzActivity.getControlInstance().changeFrag(TriggerWriting(),R.id.frage,"TriggerWriting",true)
+                    }
+                }
+
+            })
+
         }
-        return rootview
     }
 
+    override fun dispatchKeyEvent(event: KeyEvent) {
 
+        Log.e("key", "" + event.keyCode)
+        if (event.action == KeyEvent.ACTION_UP) {
+            if(event.keyCode == 21)
+            {
+                focus=0
 
+                rootview.insert.setBackgroundResource((R.mipmap.btn_rectangle_short))
+                rootview.reset.setBackgroundResource((R.color.button_orange))
+            }
+            if(event.keyCode == 22)
+            {
+                focus=1
+
+                rootview.insert.setBackgroundResource((R.color.button_orange))
+                rootview.reset.setBackgroundResource((R.mipmap.btn_rectangle_short))
+            }
+            if(event.keyCode == 66)
+            {
+                if(focus==1)
+                {
+                    rootview.insert.performClick()
+                }
+                if(focus==0)
+                {
+                    rootview.reset.performClick()
+                }
+            }
+        }
+    }
 }

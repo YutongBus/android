@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -27,7 +28,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.concurrent.schedule
 
-open class BleActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedListener {
+abstract class BleActivity : AppCompatActivity(), FragmentManager.OnBackStackChangedListener {
     override fun onBackStackChanged() {
         Fraging=supportFragmentManager.fragments[supportFragmentManager.fragments.size - 1]
         NowFrage=Fraging!!.tag!!
@@ -356,4 +357,27 @@ open class BleActivity : AppCompatActivity(), FragmentManager.OnBackStackChanged
     open fun GoMenu(){
         supportFragmentManager.popBackStack(null,1)
     }
+
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        Log.e("event", "" + event)
+        if (Fraging != null) {
+            (Fraging as DiapathKey).dispatchKeyEvent(event)
+        }//按鍵分發
+        KeyLinsten(event)
+        return super.dispatchKeyEvent(event)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        Log.e("event", "" + event)
+        if (Fraging != null) {
+            (Fraging as DiapathKey).dispatchKeyEvent(event)
+        }//按鍵分發
+        KeyLinsten(event)
+        return super.onKeyDown(keyCode, event)
+    }
+
+    /**
+     * 按鍵的監聽
+     */
+    abstract fun KeyLinsten(event: KeyEvent)
 }

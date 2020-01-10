@@ -1,15 +1,12 @@
 package com.orange.yutongbus.Frag
 
-
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
+import android.util.Log
+import android.view.KeyEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.orange.blelibrary.blelibrary.Callback.DaiSetUp
-import com.orange.blelibrary.blelibrary.RootFragement
+import com.orange.jzchi.jzframework.JzActivity
+import com.orange.jzchi.jzframework.JzFragement
 import com.orange.yutongbus.MainActivity
 
 import com.orange.yutongbus.R
@@ -20,44 +17,31 @@ import kotlinx.android.synthetic.main.fragment_wheel_tag_up.view.T1
 import java.lang.Thread.sleep
 import java.util.ArrayList
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class WheelTagUp : JzFragement(R.layout.fragment_wheel_tag_up) {
 
-/**
- * A simple [Fragment] subclass.
- *
- */
-class WheelTagUp : RootFragement() {
-companion object{
-    var type=0;
-    var 二轮配置=1;
-    var 四轮配置=2;
-    var 六轮配置=3;
-    var 八轮配置中=4;
-    var 八轮配置後=5;
-    var 十轮配置=6;
-}
+    companion object{
+        var type=0;
+        var 二轮配置=1;
+        var 四轮配置=2;
+        var 六轮配置=3;
+        var 八轮配置中=4;
+        var 八轮配置後=5;
+        var 十轮配置=6;
+    }
     var tirecount=0;
+    var focus = 1
 
     var Triggerid=ArrayList<String>()
     var IDtext=ArrayList<TextView>()
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        //if(isInitialized()){return rootview}  //留住現在Fragement之畫面
-        rootview=inflater.inflate(R.layout.fragment_wheel_tag_up, container, false)
+    override fun viewInit() {
 
         UpdateUi()
         //Triggerid.remove("123456")
         rootview.SetUp.setOnClickListener {
             if(Triggerid.size==tirecount){
                 (activity as MainActivity).Memory.Triggerid=Triggerid
-                act.ChangePage(CoolPressure(),R.id.frage,"CoolPressure",true)
+                JzActivity.getControlInstance().changeFrag(CoolPressure(),R.id.frage,"CoolPressure",true)
             }else{Trigger()}
 
         }
@@ -122,7 +106,7 @@ companion object{
             }
             else
             {
-                act.ShowDaiLog(R.layout.trigger_two_tire_error,true,false, DaiSetUp {  })
+                JzActivity.getControlInstance().showDiaLog(R.layout.trigger_two_tire_error,true,false)
             }
         }
 
@@ -139,27 +123,23 @@ companion object{
         IDtext.add(rootview.id9)
         IDtext.add(rootview.id10)
         IDtext.add(rootview.id11)
-        super.onCreateView(inflater, container, savedInstanceState)
-        SetPro("tirecount",type)
-            SetPro("havespare",SpareSelect.havespare)
-        return rootview
+        JzActivity.getControlInstance().setPro("tirecount", type)
+        JzActivity.getControlInstance().setPro("havespare", SpareSelect.havespare)
     }
 
-    override fun onKeyTrigger() {
-        super.onKeyTrigger()
-        act.DaiLogDismiss()
-        Trigger()
-    }
+//    override fun onKeyTrigger() {
+//        super.onKeyTrigger()
+//        act.DaiLogDismiss()
+//        Trigger()
+//    }
     fun Trigger(){
-        act.ShowDaiLog(R.layout.loading_dialog,false,true, DaiSetUp {
-
-        })
+        JzActivity.getControlInstance().showDiaLog(R.layout.loading_dialog,false,true)
 
         Thread{
 val a=Command.Trigger()
             sleep(1000)
             handler.post {
-                act.DaiLogDismiss()
+                JzActivity.getControlInstance().closeDiaLog()
                 if(!a.equals("false") && !Triggerid.contains(a) && Triggerid.size<tirecount){
                     Triggerid.add(a)
                     Set_Green(Triggerid.size-1)
@@ -178,11 +158,11 @@ val a=Command.Trigger()
                     }
                 }else{
 if(a.equals("false")){
-    act.ShowDaiLog(R.layout.triggererror,true,false, DaiSetUp {  })
+    JzActivity.getControlInstance().showDiaLog(R.layout.triggererror,true,false)
 }else if(Triggerid.size>=tirecount){
-    act.ShowDaiLog(R.layout.trigerrexceed,true,false,DaiSetUp {  })
+    JzActivity.getControlInstance().showDiaLog(R.layout.trigerrexceed,true,false)
 }else if(Triggerid.contains(a)){
-    act.ShowDaiLog(R.layout.triggeragain,true,false,DaiSetUp {  })
+    JzActivity.getControlInstance().showDiaLog(R.layout.triggeragain,true,false)
 }
                 }
             }
@@ -213,7 +193,7 @@ if(a.equals("false")){
                 rootview.hintext.text=if(SpareSelect.havespare) "十轮配置+备胎" else "十轮配置"}
         }
         if(SpareSelect.havespare){tirecount++}
-        SetPro("havespare",SpareSelect.havespare)
+        JzActivity.getControlInstance().setPro("havespare",SpareSelect.havespare)
     }
 
     fun UpdateUi(){
@@ -670,5 +650,28 @@ fun ResetView(){
     }
 
 }
+
+    override fun dispatchKeyEvent(event: KeyEvent) {
+
+        Log.e("key", "" + event.keyCode)
+        if (event.action == KeyEvent.ACTION_UP) {
+            if(event.keyCode == 21)
+            {
+                //focus=1
+                spbt.performClick()
+            }
+
+            if(event.keyCode == 22)
+            {
+                //focus= 2
+                nsbt.performClick()
+            }
+
+            if(event.keyCode == 131)
+            {
+                rootview.SetUp.performClick()
+            }
+        }
+    }
 
 }

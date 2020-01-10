@@ -4,14 +4,9 @@ import android.util.Log;
 
 import com.orange.yutongbus.Frag.TriggerWriting;
 import com.orange.yutongbus.lib.hardware.HardwareApp;
-import com.orange.yutongbus.lib.utils.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
-
-import static com.orange.yutongbus.lib.hardware.HardwareApp.hexStringToBytes;
-import static com.orange.yutongbus.lib.hardware.HardwareApp.str_tobyte;
 
 public class Command {
     public  static String Rx="";

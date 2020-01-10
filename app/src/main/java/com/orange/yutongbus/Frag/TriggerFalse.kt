@@ -1,40 +1,25 @@
 package com.orange.yutongbus.Frag
 
 
-import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import com.orange.blelibrary.blelibrary.Callback.DaiSetUp
-import com.orange.blelibrary.blelibrary.RootFragement
-
+import android.view.KeyEvent
+import com.orange.jzchi.jzframework.JzActivity
+import com.orange.jzchi.jzframework.JzFragement
 import com.orange.yutongbus.R
 import kotlinx.android.synthetic.main.fragment_trigger_false.view.*
-import kotlinx.android.synthetic.main.trigger_success.view.*
 import kotlinx.android.synthetic.main.trigger_success.view.exit
 import kotlinx.android.synthetic.main.trigger_success.view.keepgoing
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+class TriggerFalse : JzFragement(R.layout.fragment_trigger_false) {
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+    var focus=1
 
-/**
- * A simple [Fragment] subclass.
- *
- */
-class TriggerFalse : RootFragement() {
+    override fun viewInit() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-       rootview=inflater.inflate(R.layout.fragment_trigger_false, container, false)
-Log.e("errortype","${TriggerWriting.error_type}")
+        rootview.keepgoing.setBackgroundResource((R.color.button_orange))
+        rootview.exit.setBackgroundResource((R.mipmap.btn_rectangle_short))
+
+        Log.e("errortype","${TriggerWriting.error_type}")
         when(TriggerWriting.error_type)
         {
             //六輪(主副機)、八輪、十輪
@@ -78,16 +63,45 @@ Log.e("errortype","${TriggerWriting.error_type}")
         }
 
         rootview.exit.setOnClickListener {
-//act.supportFragmentManager.popBackStack(null,1)
-            act.DaiLogDismiss()
-            act.GoBack("WheelTagUp")
+            //act.supportFragmentManager.popBackStack(null,1)
+            JzActivity.getControlInstance().closeDiaLog()
+            JzActivity.getControlInstance().goBack("WheelTagUp")
         }
         rootview.keepgoing.setOnClickListener {
-            act.GoBack()
+            JzActivity.getControlInstance().goBack()
 
         }
-        return rootview
     }
 
+    override fun dispatchKeyEvent(event: KeyEvent) {
 
+        Log.e("key", "" + event.keyCode)
+        if (event.action == KeyEvent.ACTION_UP) {
+            if(event.keyCode == 21)
+            {
+                focus=0
+
+                rootview.keepgoing.setBackgroundResource((R.mipmap.btn_rectangle_short))
+                rootview.exit.setBackgroundResource((R.color.button_orange))
+            }
+            if(event.keyCode == 22)
+            {
+                focus=1
+
+                rootview.keepgoing.setBackgroundResource((R.color.button_orange))
+                rootview.exit.setBackgroundResource((R.mipmap.btn_rectangle_short))
+            }
+            if(event.keyCode == 66)
+            {
+                if(focus==1)
+                {
+                    rootview.keepgoing.performClick()
+                }
+                if(focus==0)
+                {
+                    rootview.exit.performClick()
+                }
+            }
+        }
+    }
 }

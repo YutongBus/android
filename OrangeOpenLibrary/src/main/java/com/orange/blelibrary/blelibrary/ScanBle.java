@@ -2,10 +2,10 @@ package com.orange.blelibrary.blelibrary;
 
 import android.bluetooth.BluetoothDevice;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutManager;
+import androidx.appcompat.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;

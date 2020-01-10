@@ -1,55 +1,74 @@
 package com.orange.yutongbus.Frag
 
-
-import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.orange.blelibrary.blelibrary.RootFragement
-import com.orange.yutongbus.MainActivity
-
+import android.util.Log
+import android.view.KeyEvent
+import com.orange.jzchi.jzframework.JzActivity
+import com.orange.jzchi.jzframework.JzFragement
 import com.orange.yutongbus.R
 import com.orange.yutongbus.YounUart.Command
-import com.orange.yutongbus.YounUart.Command.StringHexToByte
-import com.orange.yutongbus.lib.hardware.HardwareApp
-import kotlinx.android.synthetic.main.fragment_blank.view.*
 import kotlinx.android.synthetic.main.fragment_blank.view.i1
 import kotlinx.android.synthetic.main.fragment_blank.view.t1
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- *
- */
-class Home : RootFragement() {
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        rootview=inflater.inflate(R.layout.fragment_home, container, false)
+
+class Home : JzFragement(R.layout.fragment_home) {
+
+    var focus=0
+
+    override fun viewInit() {
+        trun_color()
+
         rootview.i1.setOnClickListener {
             SpareSelect.ShowDialog = true
-        act.ChangePage(SpareSelect(),R.id.frage,"SpareSelect",true)
+            JzActivity.getControlInstance().changeFrag(SpareSelect(),R.id.frage,"SpareSelect",true)
         }
         rootview.t1.setOnClickListener {
             SpareSelect.ShowDialog = true
-            act.ChangePage(SpareSelect(),R.id.frage,"SpareSelect",true)
+            JzActivity.getControlInstance().changeFrag(SpareSelect(),R.id.frage,"SpareSelect",true)
         }
         rootview.imageView4.setOnClickListener {
             Command.send("A388FFFFFFFFFFFF3A11")
-//            HardwareApp.send(StringHexToByte("0A0000030009F5"))
-//            HardwareApp.send(StringHexToByte("A388FFFFFFFFFFFF3A11"))
-//            (activity!! as MainActivity).a.readData()
         }
-        super.onCreateView(inflater, container, savedInstanceState)
-        return rootview
     }
 
+    fun trun_color()
+    {
+        if(focus == 0)
+        {
+            rootview.i1.setImageResource((R.mipmap.orange_dsbuffer))
+            rootview.t1.setTextColor(resources.getColor(R.color.button_orange))
+            rootview.imageView4.setImageResource((R.mipmap.bar_code))
+            rootview.textView3.setTextColor(resources.getColor(R.color.black))
+        }
+        else
+        {
+            rootview.i1.setImageResource((R.mipmap.frequency))
+            rootview.t1.setTextColor(resources.getColor(R.color.black))
+            rootview.imageView4.setImageResource((R.mipmap.orange_btn_bar_code))
+            rootview.textView3.setTextColor(resources.getColor(R.color.button_orange))
+        }
+    }
 
+    override fun dispatchKeyEvent(event: KeyEvent) {
+
+        Log.e("key", "" + event.keyCode)
+        if (event.action == KeyEvent.ACTION_UP) {
+            if (event.keyCode == 19) {
+                focus = 0
+                trun_color()
+            }
+            if (event.keyCode == 20) {
+                focus = 1
+                trun_color()
+            }
+            if (event.keyCode == 66) {
+                if (focus == 0) {
+                    rootview.i1.performClick()
+                } else {
+                    rootview.imageView4.performClick()
+                }
+            }
+        }
+    }
 }

@@ -1,33 +1,29 @@
 package com.orange.yutongbus.Frag
 
 
+import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.util.Log
+import android.view.KeyEvent
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.orange.blelibrary.blelibrary.Callback.DaiSetUp
-import com.orange.blelibrary.blelibrary.RootFragement
+import com.orange.jzchi.jzframework.JzActivity
+import com.orange.jzchi.jzframework.JzFragement
+import com.orange.jzchi.jzframework.callback.SetupDialog
 import com.orange.yutongbus.R
 import kotlinx.android.synthetic.main.trigger_success.view.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class TriggerSuccess : JzFragement(R.layout.trigger_success) {
 
-/**
- * A simple [Fragment] subclass.
- *
- */
-class TriggerSuccess : RootFragement() {
+    var focus=1
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        rootview=inflater.inflate(R.layout.trigger_success, container, false)
+    override fun viewInit() {
+
+        rootview.keepgoing.setBackgroundResource((R.color.button_orange))
+        rootview.exit.setBackgroundResource((R.mipmap.btn_rectangle_short))
 
         rootview.textView30.text = TriggerWriting.Main_or_Auxiliary + "\n标定完成"
 
@@ -35,20 +31,63 @@ class TriggerSuccess : RootFragement() {
             act.supportFragmentManager.popBackStack(null,1)
         }
         rootview.keepgoing.setOnClickListener {
-            act.ShowDaiLog(R.layout.keep_trigger,false,false, DaiSetUp {
-                it.findViewById<TextView>(R.id.cancel).setOnClickListener {
-                    act.DaiLogDismiss()
-                    act.supportFragmentManager.popBackStack(null,1)
+            JzActivity.getControlInstance().showDiaLog(R.layout.keep_trigger,false,false, object :
+                SetupDialog {
+                override fun dismess() {
+
                 }
-                it.findViewById<TextView>(R.id.Yes).setOnClickListener {
-                    act.DaiLogDismiss()
-                    act.GoBack("WheelTagUp")
-                } 
+
+                override fun keyevent(event: KeyEvent): Boolean {
+                    return true
+                }
+
+                override fun setup(rootview: Dialog) {
+                    it.findViewById<TextView>(R.id.cancel).setOnClickListener {
+                        rootview.dismiss()
+                        act.supportFragmentManager.popBackStack(null,1)
+                    }
+                    it.findViewById<TextView>(R.id.Yes).setOnClickListener {
+                        rootview.dismiss()
+                        JzActivity.getControlInstance().goBack("WheelTagUp")
+                    }
+                }
+
             })
-         
         }
-        return rootview
+    }
+
+    override fun dispatchKeyEvent(event: KeyEvent) {
+
+        Log.e("key", "" + event.keyCode)
+        if (event.action == KeyEvent.ACTION_UP) {
+            if(event.keyCode == 21)
+            {
+                focus=0
+
+                rootview.keepgoing.setBackgroundResource((R.mipmap.btn_rectangle_short))
+                rootview.exit.setBackgroundResource((R.color.button_orange))
+            }
+            if(event.keyCode == 22)
+            {
+                focus=1
+
+                rootview.keepgoing.setBackgroundResource((R.color.button_orange))
+                rootview.exit.setBackgroundResource((R.mipmap.btn_rectangle_short))
+            }
+            if(event.keyCode == 66)
+            {
+                if(focus==1)
+                {
+                    rootview.keepgoing.performClick()
+                }
+                if(focus==0)
+                {
+                    rootview.exit.performClick()
+                }
+            }
         }
+    }
+
     }
 
 
