@@ -667,9 +667,14 @@ fun ResetView(){
                 nsbt.performClick()
             }
 
-            if(event.keyCode == 131)
+            if(event.keyCode == 66)
             {
                 rootview.SetUp.performClick()
+            }
+
+            if(event.keyCode == 131)
+            {
+                //rootview.SetUp.performClick()
             }
         }
     }

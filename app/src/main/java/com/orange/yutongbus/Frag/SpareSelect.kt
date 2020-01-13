@@ -63,11 +63,11 @@ class SpareSelect : JzFragement(R.layout.fragment_spareselect) {
                     {
                         if(dailog_focus==1)
                         {
-                            diaroot.findViewById<TextView>(R.id.textView14).performClick()
+                            diaroot.findViewById<TextView>(R.id.textView15).performClick()
                         }
                         if(dailog_focus==0)
                         {
-                            diaroot.findViewById<TextView>(R.id.textView15).performClick()
+                            diaroot.findViewById<TextView>(R.id.textView14).performClick()
                         }
                     }
                 }
