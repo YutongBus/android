@@ -121,6 +121,7 @@ class Act_Home : JzFragement(R.layout.activity_main){
 
             val data = JzActivity.getControlInstance().getPro("tirecount", 0)
             val havespare = JzActivity.getControlInstance().getPro("havespare", false)
+
             if (data != 0) {
                 JzActivity.getControlInstance().showDiaLog(R.layout.keep_trigger, false, false, object : SetupDialog {
                     override fun dismess() {
